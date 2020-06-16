@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
@@ -15,8 +17,17 @@ namespace CarServiceApp
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            SetDatabaseConfig(services);
+
             services.AddMvc();
 
             services.AddSwaggerGen(c =>
@@ -56,6 +67,14 @@ namespace CarServiceApp
                     await context.Response.WriteAsync("Hello World!");
                 });
             });
+        }
+
+        private void SetDatabaseConfig(IServiceCollection services)
+        {
+            string connectionStr = Configuration.GetConnectionString("MSSQL");
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(connectionStr));
+            services.AddControllersWithViews();
         }
     }
 }
