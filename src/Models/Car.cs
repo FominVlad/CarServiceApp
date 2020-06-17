@@ -8,28 +8,34 @@ namespace CarServiceApp.Models
     public class Car
     {
         /// <summary>
-        /// Car VIN code.
+        /// Car VIN code. (PK)
         /// </summary>
         public string VIN { get; set; }
 
         /// <summary>
-        /// Car brand name.
-        /// </summary>
-        public string Brand { get; set; }
-
-        /// <summary>
-        /// Car model name.
-        /// </summary>
-        public string Model { get; set; }
-
-        /// <summary>
         /// Internal combustion engine.
         /// </summary>
-        public decimal EngineVolume { get; set; }
+        public float EngineVolume { get; set; }
 
         /// <summary>
         /// Fuel type unique id.
         /// </summary>
         public int FuelTypeId { get; set; }
+
+        /// <summary>
+        /// Car release date (from factory).
+        /// </summary>
+        public DateTime ReleaseDate { get; set; }
+
+        /// <summary>
+        /// Reference to car model unique id.
+        /// </summary>
+        public int CarModelId { get; set; }
+
+        public List<CustomerCar> CustomerCars { get; set; }
+
+        public FuelType FuelType { get; set; }
+
+        public CarModel CarModel { get; set; }
     }
 }

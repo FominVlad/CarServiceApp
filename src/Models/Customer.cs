@@ -8,7 +8,7 @@ namespace CarServiceApp.Models
     public class Customer
     {
         /// <summary>
-        /// Client unique id.
+        /// Client unique id. (PK)
         /// </summary>
         public int Id { get; set; }
 
@@ -36,5 +36,9 @@ namespace CarServiceApp.Models
         /// Customer passport number.
         /// </summary>
         public string PassportNumber { get; set; }
+
+        public List<CustomerCar> CustomerCars { get; set; }
+
+        public List<Contact> Contacts { get; set; }
     }
 }

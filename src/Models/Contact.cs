@@ -5,30 +5,35 @@ using System.Threading.Tasks;
 
 namespace CarServiceApp.Models
 {
-    public class CustomerCar
+    public class Contact
     {
         /// <summary>
-        /// Row unique id. (PK)
+        /// Contact unique id. (PK)
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Reference to customer id.
+        /// Reference to customer unique id.
         /// </summary>
         public int CustomerId { get; set; }
 
         /// <summary>
-        /// Reference to car id.
+        /// Reference to contact type unique id.
         /// </summary>
-        public string CarId { get; set; }
+        public int ContactTypeId { get; set; }
+
+        /// <summary>
+        /// Contact value.
+        /// </summary>
+        public string ContactValue { get; set; }
 
         /// <summary>
         /// Relevance of recording.
         /// </summary>
-        public bool Actual { get; set; } 
+        public bool Actual { get; set; }
 
         public Customer Customer { get; set; }
 
-        public Car Car { get; set; }
+        public ContactType ContactType { get; set; }
     }
 }

@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 
 namespace CarServiceApp.Models
 {
-    public class FuelType
+    public class ContactType
     {
         /// <summary>
-        /// Fuel type unique id. (PK)
+        /// Contact type unique id. (PK)
         /// </summary>
-        public int id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// Fuel type name.
+        /// Contact type.
         /// </summary>
         public string Type { get; set; }
 
-        public List<Car> Cars { get; set; }
+        public List<Contact> Contacts { get; set; }
     }
 }
