@@ -87,6 +87,7 @@ namespace CarServiceApp
 
             // Contacts configure
             modelBuilder.Entity<Contact>().HasKey(c => c.Id).HasName("PK_Contacts");
+            modelBuilder.Entity<Contact>().Property(c => c.Actual).HasDefaultValue(1);
             modelBuilder.Entity<Contact>().HasOne(c => c.ContactType)
                                           .WithMany(ct => ct.Contacts)
                                           .HasForeignKey(c => c.ContactTypeId)
