@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CarServiceApp.Helpers;
 using CarServiceApp.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,6 +41,16 @@ namespace CarServiceApp
         /// </summary>
         public DbSet<ContactType> ContactTypes { get; set; }
 
+        /// <summary>
+        /// Registered users list.
+        /// </summary>
+        public DbSet<User> Users { get; set; }
+
+        /// <summary>
+        /// Role types dictionsry.
+        /// </summary>
+        public DbSet<Role> Roles { get; set; }
+        
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
@@ -99,6 +106,29 @@ namespace CarServiceApp
 
             // ContactTypes configure
             modelBuilder.Entity<ContactType>().HasKey(ct => ct.Id).HasName("PK_ContactTypes");
+
+            // Roles configure
+            modelBuilder.Entity<Role>().HasKey(r => r.Id).HasName("PK_Roles");
+            modelBuilder.Entity<Role>().HasData(
+                new Role[]
+                {
+                    new Role { Id = 1, RoleName = "Administrator" },
+                    new Role { Id = 2, RoleName = "ViewOnly" },
+                    new Role { Id = 3, RoleName = "Employee" }
+                });
+
+            // Users configure
+            modelBuilder.Entity<User>().HasKey(u => u.Id).HasName("PK_Users");
+            modelBuilder.Entity<User>().HasOne(r => r.Role)
+                                       .WithMany(u => u.Users)
+                                       .HasForeignKey(r => r.RoleId)
+                                       .HasConstraintName("FK_Users_Roles");
+            modelBuilder.Entity<User>().HasData(
+                new User[]
+                {
+                    new User { Id = 1, Login = "Admin", Password = PasswordManager.GetPassHash("Admin", "adm123"), 
+                               Name = "", Surname = "", RoleId = 1 }
+                });
         }
     }
 }
