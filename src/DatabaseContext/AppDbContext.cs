@@ -106,6 +106,16 @@ namespace CarServiceApp
 
             // ContactTypes configure
             modelBuilder.Entity<ContactType>().HasKey(ct => ct.Id).HasName("PK_ContactTypes");
+            modelBuilder.Entity<ContactType>().HasData(
+                new ContactType[] 
+                {
+                    new ContactType { Id = 1, Type = "Phone number" },
+                    new ContactType { Id = 2, Type = "Email" },
+                    new ContactType { Id = 3, Type = "Instagram" },
+                    new ContactType { Id = 4, Type = "Facebook" },
+                    new ContactType { Id = 5, Type = "Viber" },
+                    new ContactType { Id = 6, Type = "Telegram" }
+                });
 
             // Roles configure
             modelBuilder.Entity<Role>().HasKey(r => r.Id).HasName("PK_Roles");
@@ -123,6 +133,7 @@ namespace CarServiceApp
                                        .WithMany(u => u.Users)
                                        .HasForeignKey(r => r.RoleId)
                                        .HasConstraintName("FK_Users_Roles");
+            modelBuilder.Entity<User>().HasAlternateKey(u => u.Login).HasName("UK_User_Login");
             modelBuilder.Entity<User>().HasData(
                 new User[]
                 {
