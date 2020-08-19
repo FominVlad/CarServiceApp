@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace CarServiceApp
@@ -40,6 +40,26 @@ namespace CarServiceApp
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidIssuer = Configuration.GetSection("AuthOptions")?.GetSection("ISSUER")?.Value,
+
+                            ValidateAudience = true,
+                            ValidAudience = Configuration.GetSection("AuthOptions")?.GetSection("AUDIENCE")?.Value,
+                            ValidateLifetime = true,
+
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
+                                Configuration.GetSection("AuthOptions")?.GetSection("KEY")?.Value)),
+                            ValidateIssuerSigningKey = true,
+                            ClockSkew = TimeSpan.FromMinutes(1)
+                        };
+                    });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -60,18 +80,18 @@ namespace CarServiceApp
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
 
         private void SetDatabaseConfig(IServiceCollection services)
         {
-            string connectionStr = Configuration.GetConnectionString("MSSQL");
+            string connectionStr = Configuration.GetConnectionString("ServerMSSQL");
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(connectionStr));
             services.AddControllersWithViews();
