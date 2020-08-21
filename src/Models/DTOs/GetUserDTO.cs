@@ -39,7 +39,8 @@ namespace CarServiceApp.Models.DTOs
                 Id = user.Id,
                 Name = user.Name,
                 Surname = user.Surname,
-                Login = user.Login
+                Login = user.Login,
+                RoleId = user.RoleId
             };
         }
     }
