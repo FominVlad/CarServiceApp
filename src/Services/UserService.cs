@@ -80,6 +80,27 @@ namespace CarServiceApp.Services
             }
         }
 
+        public bool UpdateUserRole(User user)
+        {
+            try
+            {
+                User userForUpdate = dbContext.Users.FirstOrDefault(u => u.Id == user.Id);
+
+                if (userForUpdate == null)
+                    throw new Exception("User is undefined!");
+
+                userForUpdate.RoleId = user.RoleId;
+
+                dbContext.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public GetUserDTO GetUser(int id)
         {
             try

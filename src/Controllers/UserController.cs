@@ -125,7 +125,7 @@ namespace CarServiceApp.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult UpdateUserRole(UpdateUserRoleDTO updateUserRoleDTO)
         {
-            if(updateUserRoleDTO != null && userService.UpdateUser((User)updateUserRoleDTO))
+            if(updateUserRoleDTO != null && userService.UpdateUserRole((User)updateUserRoleDTO))
             {
                 return Ok();
             }
