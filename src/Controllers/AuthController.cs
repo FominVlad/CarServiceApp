@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CarServiceApp.Controllers
 {
-    [Route("AuthController")]
+    [Route("auth")]
     [ApiController]
     public class AuthController : Controller
     {
@@ -25,9 +25,12 @@ namespace CarServiceApp.Controllers
             this.configuration = configuration;
         }
 
-        [HttpPost("/token")]
-        public IActionResult Token(string login, string password)
+        [HttpPost]
+        public IActionResult GetToken(string login, string password)
         {
+            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+                return BadRequest();
+
             ClaimsIdentity identity = GetIdentity(login, PasswordManager.GetPassHash(login, password));
             if (identity == null)
             {
@@ -62,7 +65,8 @@ namespace CarServiceApp.Controllers
                 List<Claim> claims = new List<Claim>
                 {
                     new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, dbContext.Roles.FirstOrDefault(x => x.Id == user.RoleId).RoleName)
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, dbContext.Roles.FirstOrDefault(x => x.Id == user.RoleId).RoleName),
+                    new Claim("userId", user.Id.ToString())
                 };
                 ClaimsIdentity claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,

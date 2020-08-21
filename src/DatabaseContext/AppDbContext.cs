@@ -119,6 +119,7 @@ namespace CarServiceApp
 
             // Roles configure
             modelBuilder.Entity<Role>().HasKey(r => r.Id).HasName("PK_Roles");
+            modelBuilder.Entity<Role>().Property(r => r.RoleName).IsRequired();
             modelBuilder.Entity<Role>().HasData(
                 new Role[]
                 {
@@ -134,6 +135,9 @@ namespace CarServiceApp
                                        .HasForeignKey(r => r.RoleId)
                                        .HasConstraintName("FK_Users_Roles");
             modelBuilder.Entity<User>().HasAlternateKey(u => u.Login).HasName("UK_User_Login");
+            modelBuilder.Entity<User>().Property(u => u.Login).IsRequired();
+            modelBuilder.Entity<User>().Property(u => u.Password).IsRequired();
+            modelBuilder.Entity<User>().Property(u => u.RoleId).IsRequired();
             modelBuilder.Entity<User>().HasData(
                 new User[]
                 {
