@@ -25,6 +25,12 @@ namespace CarServiceApp.Controllers
             this.configuration = configuration;
         }
 
+        /// <summary>
+        /// Get an access token.
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult GetToken(string login, string password)
         {

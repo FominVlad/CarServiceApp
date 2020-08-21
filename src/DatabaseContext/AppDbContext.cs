@@ -134,7 +134,8 @@ namespace CarServiceApp
                                        .WithMany(u => u.Users)
                                        .HasForeignKey(r => r.RoleId)
                                        .HasConstraintName("FK_Users_Roles");
-            modelBuilder.Entity<User>().HasAlternateKey(u => u.Login).HasName("UK_User_Login");
+            modelBuilder.Entity<User>().HasIndex(u => u.Login)
+                                       .IsUnique().HasName("UK_User_Login");
             modelBuilder.Entity<User>().Property(u => u.Login).IsRequired();
             modelBuilder.Entity<User>().Property(u => u.Password).IsRequired();
             modelBuilder.Entity<User>().Property(u => u.RoleId).IsRequired();

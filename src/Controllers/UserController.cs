@@ -23,6 +23,11 @@ namespace CarServiceApp.Controllers
             this.userService = userService;
         }
 
+        /// <summary>
+        /// Create a user account.
+        /// </summary>
+        /// <param name="createUserDTO"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         public IActionResult CreateUser(CreateUserDTO createUserDTO)
@@ -37,6 +42,11 @@ namespace CarServiceApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete user account.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Authorize(Roles = "Administrator")]
         public IActionResult DeleteUser(int? id)
@@ -51,6 +61,11 @@ namespace CarServiceApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Change user account.
+        /// </summary>
+        /// <param name="updateUserDTO"></param>
+        /// <returns></returns>
         [HttpPut]
         [Authorize(Roles = "Administrator, Employee")]
         public IActionResult UpdateUser(UpdateUserDTO updateUserDTO)
@@ -72,6 +87,11 @@ namespace CarServiceApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Get information about user accounts.
+        /// </summary>
+        /// <param name="id">Specific user id.</param>
+        /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Administrator, Employee")]
         public IActionResult GetUserInfo(int? id)
@@ -96,6 +116,11 @@ namespace CarServiceApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Change user role.
+        /// </summary>
+        /// <param name="updateUserRoleDTO"></param>
+        /// <returns></returns>
         [HttpPatch]
         [Authorize(Roles = "Administrator")]
         public IActionResult UpdateUserRole(UpdateUserRoleDTO updateUserRoleDTO)
