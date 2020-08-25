@@ -30,6 +30,8 @@ namespace CarServiceApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult CreateUser(CreateUserDTO createUserDTO)
         {
             if(userService.AddUser(createUserDTO))
@@ -49,6 +51,8 @@ namespace CarServiceApp.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult DeleteUser(int? id)
         {
             if (Int32.TryParse(id.ToString(), out int parsedId) && userService.DeleteUser(parsedId))
@@ -68,6 +72,8 @@ namespace CarServiceApp.Controllers
         /// <returns></returns>
         [HttpPut]
         [Authorize(Roles = "Administrator, Employee")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult UpdateUser(UpdateUserDTO updateUserDTO)
         {
             if (User.IsInRole("Employee") &&
@@ -94,6 +100,8 @@ namespace CarServiceApp.Controllers
         /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Administrator, Employee")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult GetUserInfo(int? id)
         {
             if (id == null)
@@ -123,6 +131,8 @@ namespace CarServiceApp.Controllers
         /// <returns></returns>
         [HttpPatch]
         [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult UpdateUserRole(UpdateUserRoleDTO updateUserRoleDTO)
         {
             if(updateUserRoleDTO != null && userService.UpdateUserRole((User)updateUserRoleDTO))
