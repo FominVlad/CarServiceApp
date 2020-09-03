@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using CarServiceApp.Helpers;
 using CarServiceApp.Models;
+using CarServiceApp.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -35,12 +36,12 @@ namespace CarServiceApp.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetToken(string login, string password)
+        public IActionResult GetToken(AuthUserDTO authUserDTO)
         {
-            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+            if (!ModelState.IsValid)
                 return BadRequest();
 
-            ClaimsIdentity identity = GetIdentity(login, PasswordManager.GetPassHash(login, password));
+            ClaimsIdentity identity = GetIdentity(authUserDTO.Login, PasswordManager.GetPassHash(authUserDTO.Login, authUserDTO.Password));
             if (identity == null)
             {
                 return BadRequest(new { errorText = "Invalid username or password." });
